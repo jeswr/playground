@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@comunica/actor-init-sparql-rdfjs": "^1.19.2",
     "@ldflex/comunica": "^3.4.2",
