@@ -1,130 +1,60 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var __asyncValues = (this && this.__asyncValues) || function (o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var actor_init_sparql_rdfjs_1 = require("@comunica/actor-init-sparql-rdfjs");
+const actor_init_sparql_rdfjs_1 = require("@comunica/actor-init-sparql-rdfjs");
 // @ts-ignore This has no type declarations - big sad, will create PR with my branches type declarations when I have the chance
-var comunica_1 = __importDefault(require("@ldflex/comunica"));
+const comunica_1 = __importDefault(require("@ldflex/comunica"));
 // @ts-ignore Again, no type declarations.
-var ldflex_1 = require("ldflex");
-var n3_1 = require("n3");
-var jsonld_streaming_parser_1 = require("jsonld-streaming-parser");
-var data_model_1 = require("@rdfjs/data-model");
-var parserJsonld = new jsonld_streaming_parser_1.JsonLdParser();
-var jsonLdString = "{\n  \"@context\": \"http://schema.org/\",\n  \"@graph\": [{\n    \"@id\": \"https://example.org/Person/JaneDoe\",\n    \"@type\": \"Person\",\n    \"name\": \"Jane Doe\",\n    \"jobTitle\": \"Professor\",\n    \"telephone\": \"(425) 123-4567\",\n    \"url\": \"http://www.janedoe.com\"\n  },{\n    \"@id\": \"https://example.org/Person/JohnDoe\",\n    \"@type\": \"Person\",\n    \"name\": \"John Doe\",\n    \"jobTitle\": \"Professor\",\n    \"telephone\": \"(425) 234-5678\",\n    \"url\": \"http://www.johndoe.com\"\n  }]\n}";
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var store, queryEngine, path, person, _a, _b, _c, _d, _e, individual, _f, _g, _h, e_1_1;
-    var e_1, _j;
-    return __generator(this, function (_k) {
-        switch (_k.label) {
-            case 0:
-                store = new n3_1.Store();
-                return [4 /*yield*/, new Promise(function (resolve, reject) {
-                        // NOTE: Store.addQuads accepts an *array of quads* as input, store.inport accepts a *stream*
-                        store.import(parserJsonld)
-                            .on('end', resolve)
-                            .on('error', reject);
-                        console.log('writing quads ...');
-                        parserJsonld.write(jsonLdString);
-                        console.log('finished writing quads\n');
-                        parserJsonld.end();
-                    })];
-            case 1:
-                _k.sent();
-                queryEngine = new comunica_1.default();
-                queryEngine._engine = actor_init_sparql_rdfjs_1.newEngine();
-                queryEngine._sources = [store];
-                path = new ldflex_1.PathFactory({
-                    context: { "@context": "https://schema.org/" },
-                    queryEngine: queryEngine,
-                });
-                person = path.create({
-                    subject: data_model_1.namedNode("https://example.org/Person/JohnDoe")
-                });
-                _b = (_a = console).log;
-                _c = "main subject name: ";
-                return [4 /*yield*/, person["http://schema.org/name"]];
-            case 2:
-                _b.apply(_a, [_c + (_k.sent())]);
-                console.log('');
-                _k.label = 3;
-            case 3:
-                _k.trys.push([3, 9, 10, 15]);
-                _d = __asyncValues(person.subjects);
-                _k.label = 4;
-            case 4: return [4 /*yield*/, _d.next()];
-            case 5:
-                if (!(_e = _k.sent(), !_e.done)) return [3 /*break*/, 8];
-                individual = _e.value;
-                _g = (_f = console).log;
-                _h = "random subject name: ";
-                return [4 /*yield*/, individual["http://schema.org/name"]];
-            case 6:
-                _g.apply(_f, [_h + (_k.sent())]);
-                _k.label = 7;
-            case 7: return [3 /*break*/, 4];
-            case 8: return [3 /*break*/, 15];
-            case 9:
-                e_1_1 = _k.sent();
-                e_1 = { error: e_1_1 };
-                return [3 /*break*/, 15];
-            case 10:
-                _k.trys.push([10, , 13, 14]);
-                if (!(_e && !_e.done && (_j = _d.return))) return [3 /*break*/, 12];
-                return [4 /*yield*/, _j.call(_d)];
-            case 11:
-                _k.sent();
-                _k.label = 12;
-            case 12: return [3 /*break*/, 14];
-            case 13:
-                if (e_1) throw e_1.error;
-                return [7 /*endfinally*/];
-            case 14: return [7 /*endfinally*/];
-            case 15: return [2 /*return*/];
-        }
+const ldflex_1 = require("ldflex");
+const n3_1 = require("n3");
+const jsonld_streaming_parser_1 = require("jsonld-streaming-parser");
+const data_model_1 = require("@rdfjs/data-model");
+const parserJsonld = new jsonld_streaming_parser_1.JsonLdParser();
+const jsonLdString = `{
+  "@context": "http://schema.org/",
+  "@graph": [{
+    "@id": "https://example.org/Person/JaneDoe",
+    "@type": "Person",
+    "name": "Jane Doe",
+    "jobTitle": "Professor",
+    "telephone": "(425) 123-4567",
+    "url": "http://www.janedoe.com"
+  },{
+    "@id": "https://example.org/Person/JohnDoe",
+    "@type": "Person",
+    "name": "John Doe",
+    "jobTitle": "Professor",
+    "telephone": "(425) 234-5678",
+    "url": "http://www.johndoe.com"
+  }]
+}`;
+(async () => {
+    const store = new n3_1.Store();
+    await new Promise((resolve, reject) => {
+        // NOTE: Store.addQuads accepts an *array of quads* as input, store.inport accepts a *stream*
+        store.import(parserJsonld)
+            .on('end', resolve)
+            .on('error', reject);
+        console.log('writing quads ...');
+        parserJsonld.write(jsonLdString);
+        console.log('finished writing quads\n');
+        parserJsonld.end();
     });
-}); })();
+    const queryEngine = new comunica_1.default();
+    queryEngine._engine = actor_init_sparql_rdfjs_1.newEngine();
+    queryEngine._sources = [store];
+    const path = new ldflex_1.PathFactory({
+        context: { "@context": "https://schema.org/" },
+        queryEngine,
+    });
+    const person = path.create({
+        subject: data_model_1.namedNode("https://example.org/Person/JohnDoe")
+    });
+    console.log(`main subject name: ${await person["http://schema.org/name"]}`);
+    console.log('');
+    for await (const individual of person.subjects) {
+        console.log(`random subject name: ${await individual["http://schema.org/name"]}`);
+    }
+})();
