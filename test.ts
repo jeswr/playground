@@ -55,8 +55,10 @@ const jsonLdString = `{
     });
 
     console.log(`main subject name: ${await person["http://schema.org/name"]}`);
-
-    for await (const person of person.subjects) {
-      console.log(`main subject name: ${await person["http://schema.org/name"]}`);
+    
+    console.log('')
+    
+    for await (const individual of person.subjects) {
+      console.log(`random subject name: ${await individual["http://schema.org/name"]}`);
     }
 })();
