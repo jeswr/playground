@@ -55,6 +55,8 @@ const jsonLdString = `{
     });
 
     console.log(`main subject name: ${await person["http://schema.org/name"]}`);
+    // Because of our context we can also do this
+    console.log(`main subject name using .name: ${await person.name}`);
     
     console.log('')
     
